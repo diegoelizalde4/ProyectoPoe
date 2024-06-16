@@ -1,0 +1,5 @@
+ID	Nombre	Horas Trabajadas	Salario Base	Impuestos	Prestaciones	Salario Bruto	Salario Neto	Fecha y Hora	
+23110331	Alejandro Diego	123	100.0	1230.0	1230.0	12300.0	9840.0	16/06/2024 11:00:44	
+23110331	Alejandro Diego	123	100.0	1230.0	1230.0	12300.0	9840.0	16/06/2024 11:02:25	
+23110331	Alejandro Diego	25	100.0	250.0	250.0	2500.0	2000.0	16/06/2024 11:02:25	
+231103311	Al	25	250.0	625.0	625.0	6250.0	5000.0	16/06/2024 11:02:25	

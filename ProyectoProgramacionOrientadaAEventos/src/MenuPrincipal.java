@@ -1,16 +1,22 @@
-//by Diego Elizalde
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MenuPrincipal extends JFrame {
     private JComboBox<String> menuComboBox;
     private JButton goButton;
     private List<Empleado> empleados;
     private List<Nominas> nominas;
+    private HistorialNominas historialNominas;
+    private boolean isAuthenticated = false;
+    private Map<String, String> userCredentials;
 
     public MenuPrincipal() {
         setTitle("Menú Principal");
@@ -20,8 +26,12 @@ public class MenuPrincipal extends JFrame {
 
         empleados = new LinkedList<>();
         nominas = new LinkedList<>();
+        historialNominas = new HistorialNominas();
+        userCredentials = new HashMap<>();
+        userCredentials.put("user1", "password1");
+        userCredentials.put("user2", "password2");
 
-        String[] menuOptions = {"Seleccione una opción", "Registro de Empleados", "Tabla de Empleados", "Registro de Horas", "Calculadora de Nóminas", "Área General", "Área Jefe de Área", "Área Empleado"};
+        String[] menuOptions = {"Seleccione una opción", "Login", "Registro de Empleados", "Tabla de Empleados", "Registro de Horas", "Calculadora de Nóminas", "Área General", "Área Jefe de Área", "Área Empleado", "Historial de Nóminas"};
         menuComboBox = new JComboBox<>(menuOptions);
         goButton = new JButton("Ir");
 
@@ -43,31 +53,77 @@ public class MenuPrincipal extends JFrame {
     private void navigate() {
         String selectedOption = (String) menuComboBox.getSelectedItem();
         switch (selectedOption) {
+            case "Login":
+                new LoginDialog(this, userCredentials);
+                break;
             case "Registro de Empleados":
-                new FormularioEmpleados(empleados);
+                if (isAuthenticated) {
+                    new FormularioEmpleados(empleados);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             case "Tabla de Empleados":
-                new EmpleadosTabla(empleados);
+                if (isAuthenticated) {
+                    new EmpleadosTabla(empleados);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             case "Registro de Horas":
-                new RegistroHoras(empleados, nominas);
+                if (isAuthenticated) {
+                    new RegistroHoras(empleados, nominas);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             case "Calculadora de Nóminas":
-                new CalculadoraNominas(nominas);
+                if (isAuthenticated) {
+                    new CalculadoraNominas(nominas, historialNominas);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             case "Área General":
-                new AreaGeneral(empleados);
+                if (isAuthenticated) {
+                    new AreaGeneral(empleados);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             case "Área Jefe de Área":
-                new AreaJefeDeArea(empleados);
+                if (isAuthenticated) {
+                    new AreaJefeDeArea(empleados);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             case "Área Empleado":
-                new AreaEmpleado(empleados);
+                if (isAuthenticated) {
+                    new AreaEmpleado(empleados);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
+                break;
+            case "Historial de Nóminas":
+                if (isAuthenticated) {
+                    new HistorialNominasFrame(historialNominas);
+                } else {
+                    showMessage("Por favor, inicie sesión primero.");
+                }
                 break;
             default:
                 JOptionPane.showMessageDialog(this, "Seleccione una opción válida.");
                 break;
         }
+    }
+
+    public void setAuthenticated(boolean isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
+    }
+
+    private void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 
     public static void main(String[] args) {
