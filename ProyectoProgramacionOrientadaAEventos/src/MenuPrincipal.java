@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,9 +18,9 @@ public class MenuPrincipal extends JFrame {
 
     public MenuPrincipal() {
         setTitle("Menú Principal");
-        setSize(300, 200);
+        setSize(400, 300); // Ajuste del tamaño para acomodar el logo
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(2, 2));
+        setLayout(new BorderLayout()); // Cambio a BorderLayout
 
         empleados = new LinkedList<>();
         nominas = new LinkedList<>();
@@ -31,14 +29,45 @@ public class MenuPrincipal extends JFrame {
         userCredentials.put("user1", "password1");
         userCredentials.put("user2", "password2");
 
+        // Panel para el logo
+        JPanel logoPanel = new JPanel();
+        logoPanel.setLayout(new FlowLayout());
+
+        // Cargar el logo
+        ImageIcon logoIcon = null;
+        try {
+            logoIcon = new ImageIcon(getClass().getResource("Logo.png")); // Cargar desde el mismo paquete
+        } catch (Exception e) {
+            System.out.println("Error al cargar el logo: " + e.getMessage());
+        }
+
+        if (logoIcon != null) {
+            JLabel logoLabel = new JLabel(logoIcon);
+            logoPanel.add(logoLabel);
+        } else {
+            logoPanel.add(new JLabel("Logo no disponible"));
+        }
+
+        add(logoPanel, BorderLayout.NORTH);
+
+        // Panel para el menú
+        JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(new GridLayout(3, 2)); // Ajuste del layout para el menú
+
         String[] menuOptions = {"Seleccione una opción", "Login", "Registro de Empleados", "Tabla de Empleados", "Registro de Horas", "Calculadora de Nóminas", "Área General", "Área Jefe de Área", "Área Empleado", "Historial de Nóminas"};
         menuComboBox = new JComboBox<>(menuOptions);
         goButton = new JButton("Ir");
 
-        add(new JLabel("Seleccione una opción:"));
-        add(menuComboBox);
-        add(new JLabel(""));
-        add(goButton);
+        // Configuración de cursores
+        menuComboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        goButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        menuPanel.add(new JLabel("Seleccione una opción:"));
+        menuPanel.add(menuComboBox);
+        menuPanel.add(new JLabel(""));
+        menuPanel.add(goButton);
+
+        add(menuPanel, BorderLayout.CENTER);
 
         goButton.addActionListener(new ActionListener() {
             @Override
